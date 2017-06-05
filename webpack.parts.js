@@ -1,6 +1,6 @@
 var webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
-
 
 /// DEV SERVER
 
@@ -22,12 +22,27 @@ exports.devServer = ({host, port} = {}) => ({
   },
 });
 
-
 //// HMR PLUGIN
 
-exports.hotModulePlugin = () => ({
+exports.hotModuleReplacementPlugin = () => ({
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+  ],
+});
+
+/// HtmlWebpackPlugin
+
+exports.htmlWebpackPlugin = () => ({
+  plugins: [
+    new HtmlWebpackPlugin({ title: 'Webpack Demo'}),
+  ],
+});
+
+/// NamedModulesPlugin
+
+exports.namedModulesPlugin = () => ({
+  plugins: [
+    new webpack.NamedModulesPlugin(),
   ],
 });
 
@@ -56,11 +71,22 @@ exports.loadStyles = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         include,
         exclude,
-
-        use: ['style-loader', 'css-loader'],
+        use: [{
+          loader: 'style-loader',
+        },{
+          loader: 'css-loader', options: {
+            sourceMap: true,
+          },
+        },{
+          loader: 'resolve-url-loader',
+        },{
+          loader: 'sass-loader', options: {
+            sourceMap: true,
+          },
+        }],
       },
     ],
   },

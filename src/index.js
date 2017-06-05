@@ -3,6 +3,8 @@ import React from 'react';
 import component from './component';
 import { AppContainer } from 'react-hot-loader';
 
+import './styles/index.scss';
+
 const app = document.createElement('div');
 document.body.appendChild(app);
 
