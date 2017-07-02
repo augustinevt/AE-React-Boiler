@@ -8,7 +8,7 @@ const commonConfig = merge([
 
   {
     entry: {
-      app: ['react-hot-loader/patch', 'whatwg-fetch', PATHS.app],
+      app: ['babel-polyfill', 'react-hot-loader/patch', 'whatwg-fetch', PATHS.app ],
     },
     output: {
       path: PATHS.build,

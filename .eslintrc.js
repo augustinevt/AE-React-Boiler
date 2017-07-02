@@ -11,7 +11,7 @@ module.exports = {
   },
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
-    indent: ['error', 2],
+    indent: ['error', 4],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'no-unused-vars': ['warn'],

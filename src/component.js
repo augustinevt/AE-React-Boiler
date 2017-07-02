@@ -1,6 +1,14 @@
 import React from 'react';
 import api from './helpers/api';
 
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => {
+  return {
+    trees: state
+  }
+}
+
 class DemoReact extends React.Component {
 
   constructor(props) {
@@ -12,10 +20,13 @@ class DemoReact extends React.Component {
   }
 
   componentDidMount() {
-    api.sets()
-      .then((res) => { return res.json() })
-      .then((json) => { this.setState({sets: json}) })
-  }
+  //   api.sets()
+  //     .then((res) => { return res.json() })
+  //     .then((json) => { this.setState({sets: json}) })
+  // }
+
+  this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: []})
+}
 
 // will probably
   displaySets(sets) {
@@ -36,13 +47,16 @@ class DemoReact extends React.Component {
 
   render() {
     const sets = this.displaySets(this.state.sets);
+console.log('hello', this.props, this)
 
     return(
       <div>
-        { sets }
+        hellooo
       </div>
     )
   }
 }
 
-export default DemoReact;
+
+const connectedDemoReact = connect(mapStateToProps)(DemoReact);
+export default connectedDemoReact;
