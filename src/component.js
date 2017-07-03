@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return {
-    trees: state
+    trees: state.trees,
+    isFetching: state.isFetching,
   }
 }
 
@@ -16,42 +17,34 @@ class DemoReact extends React.Component {
 
     this.state = {
       sets: [],
+
     }
   }
 
   componentDidMount() {
-  //   api.sets()
-  //     .then((res) => { return res.json() })
-  //     .then((json) => { this.setState({sets: json}) })
-  // }
 
-  this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: []})
-}
+    this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: []})
+
+  }
 
 // will probably
-  displaySets(sets) {
-
-    return sets.map((set, i) => {
-      const setItems = set.items.map((item, j) => {
-        return <h3 key={`${set.name}-item-${j}`}> {item} </h3>
-      });
-
-      return(
-        <div key={`${set.name}-${i}`} >
-          <h1> {set.name} </h1>
-          { setItems }
-        </div>
-      )
-    })
+  display(sets) {
+    if ( this.props.isFetching ) {
+      return <h1> loading </h1>
+    }
+    return <h1> foo </h1>
+console.log(sets)
   }
 
   render() {
-    const sets = this.displaySets(this.state.sets);
-console.log('hello', this.props, this)
+
+    const display = this.display(this.props.trees)
+
+// console.log('hello', this.props, this)
 
     return(
       <div>
-        hellooo
+        { display }
       </div>
     )
   }

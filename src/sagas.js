@@ -3,10 +3,8 @@ import api from './helpers/api';
 
 function* getTrees(action) {
   try {
-
     const trees = yield call(api.sets)
-    console.log('this is the success',trees)
-    yield put({ type: 'GET_TREES_SUCCESS', payload: trees });
+    yield put({ type: 'GET_TREES_SUCCESS', payload: trees.children });
   } catch (e) {
     yield put({ type: 'GET_TREES_FAILURE', message: e.message})
   }
