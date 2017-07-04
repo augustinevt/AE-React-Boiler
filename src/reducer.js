@@ -2,11 +2,16 @@ const thing = (state = {manifest: {}, currentTree: {}, isFetching: true }, actio
   console.log(action)
   switch (action.type) {
     case 'GET_TREES_SUCCESS':
-      const { currentTree } = state;
-      return { manifest: action.payload, currentTree, isFetching: false}
+
+      const newManifest = action.payload.manifest;
+      const newTree = action.payload.newPower;
+
+      return { manifest: newManifest, currentTree: newTree, isFetching: false}
+
     case 'SET_CURRENT_TREE':
+
       const { manifest, isFetching} = state;
-      return { manifest, currentTree: action.payload, isFetching}
+      return { manifest, currentTree: action.payload.newRoot, isFetching}
     default:
       return state;
   }

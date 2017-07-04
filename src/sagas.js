@@ -5,15 +5,29 @@ import clone from 'clone';
 
 function* setCurrentTree(action) {
   try {
+    const {name, manifest} = action.payload;
 
+    const newRoot = clone(manifest[name]);
+    const children = [];
+
+    for (const key in manifest) {
+      const node = manifest[key];
+      const pathArray = node.path ? node.path.split(',') : '';
+      const parent = pathArray[pathArray.length - 2];
+      if (parent === newRoot.name) {
+        children.push(node);
+      }
+    }
+
+    newRoot.children = children;
+
+
+
+    yield put({ type: 'SET_CURRENT_TREE', payload: {newRoot} })
   } catch (e) {
-
+    console.log('foo')
   }
 }
-
-
-
-
 
 
 function* getTrees(action) {
@@ -22,7 +36,7 @@ function* getTrees(action) {
     const defaultNode = 'power'
     const manifest = yield call(api.sets);
     const newTree = {};
-    const newPower = clone(manifest[defaultNode]);
+    const newPower = clone(manifest.power);
     const children = [];
 
 
@@ -39,8 +53,8 @@ function* getTrees(action) {
     newTree.root = newPower;
 
 
-    yield put({ type: 'SET_CURRENT_TREE', payload: newPower });
-    yield put({ type: 'GET_TREES_SUCCESS', payload: manifest });
+    // yield put({ type: 'SET_CURRENT_TREE', payload: newPower });
+    yield put({ type: 'GET_TREES_SUCCESS', payload: {manifest, newPower} });
 
   } catch (e) {
     yield put({ type: 'GET_TREES_FAILURE', message: e.message})
@@ -52,7 +66,7 @@ function* loadingSaga() {
 }
 
 function* treeSettingSaga() {
-  yield takeLatest("SET_CURRENT_TREE", setCurrentTree)
+  yield takeLatest("YOO", setCurrentTree)
 }
 
 function* rootSaga() {

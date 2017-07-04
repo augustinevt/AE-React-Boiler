@@ -8,13 +8,13 @@ class Card extends React.Component {
 
   handyTrigger() {
     console.log(this.props)
-    this.props.handyEvent({props: 'data'})
+    this.props.handyEvent({name: this.props.name})
   }
 
   render() {
     return (
       <div onClick={this.handyTrigger}>
-        foo
+        {this.props.name}
       </div>
     )
   }

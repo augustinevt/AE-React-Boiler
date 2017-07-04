@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
   return {
     root: state.currentTree,
+    manifest: state.manifest,
     isFetching: state.isFetching,
   }
 }
@@ -30,15 +31,21 @@ class DemoReact extends React.Component {
   }
 
   dispatchNewSaga(data) {
-    alert(data);
+console.log(data)
+    this.props.dispatch({type: 'YOO', payload: {
+      name: data.name,
+      manifest: this.props.manifest
+    }})
   }
 
 // will probably
   display(sets) {
 
     const children = this.props.root.children.map((child, i) => {
-      return <Card handyEvent={ this.dispatchNewSaga }/>
+      return <Card name={child.name} handyEvent={ this.dispatchNewSaga }/>
     })
+
+    // const children = ['foo']
 
     return (
       <div>
