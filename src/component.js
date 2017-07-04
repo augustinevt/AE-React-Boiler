@@ -1,11 +1,12 @@
 import React from 'react';
 import api from './helpers/api';
+import Card from './Card';
 
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return {
-    trees: state.trees,
+    root: state.currentTree,
     isFetching: state.isFetching,
   }
 }
@@ -17,8 +18,9 @@ class DemoReact extends React.Component {
 
     this.state = {
       sets: [],
-
     }
+
+    this.dispatchNewSaga = this.dispatchNewSaga.bind(this)
   }
 
   componentDidMount() {
@@ -27,24 +29,39 @@ class DemoReact extends React.Component {
 
   }
 
-// will probably
-  display(sets) {
-    if ( this.props.isFetching ) {
-      return <h1> loading </h1>
-    }
-    return <h1> foo </h1>
-console.log(sets)
+  dispatchNewSaga(data) {
+    alert(data);
   }
 
+// will probably
+  display(sets) {
+
+    const children = this.props.root.children.map((child, i) => {
+      return <Card handyEvent={ this.dispatchNewSaga }/>
+    })
+
+    return (
+      <div>
+        <h1> {this.props.root.name} </h1>
+        { children}
+      </div>
+    )
+  }
+
+
+
   render() {
+    let jsx;
+      if ( this.props.isFetching ) {
+        jsx =  <h1> loading </h1>
+      } else {
+        jsx = this.display(this.props.trees)
+      }
 
-    const display = this.display(this.props.trees)
-
-// console.log('hello', this.props, this)
 
     return(
       <div>
-        { display }
+        {jsx}
       </div>
     )
   }
