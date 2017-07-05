@@ -1,0 +1,12 @@
+.child-card {
+  box-shadow: 2px 2px 5px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  cursor: pointer;
+  &__name {
+    color: red;
+  }
+}

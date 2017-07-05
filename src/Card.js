@@ -13,8 +13,10 @@ class Card extends React.Component {
 
   render() {
     return (
-      <div onClick={this.handyTrigger}>
-        {this.props.name}
+      <div className="child-card"> 
+        <div className="child-card__name" onClick={this.handyTrigger}>
+          {this.props.name}
+        </div>
       </div>
     )
   }

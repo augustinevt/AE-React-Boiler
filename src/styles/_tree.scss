@@ -1,0 +1,22 @@
+.tree {
+  &__node-name {
+    // border: solid;
+    text-align: center;
+  }
+
+  &__children {
+    // border: solid;
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+  }
+}
+
+.path {
+  &__word {
+    margin-right: 5px;
+    &:hover {
+      color: blue;
+    }
+  }
+}

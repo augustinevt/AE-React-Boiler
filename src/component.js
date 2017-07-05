@@ -1,6 +1,7 @@
 import React from 'react';
 import api from './helpers/api';
 import Card from './Card';
+import Path from './Path';
 
 import { connect } from 'react-redux';
 
@@ -45,12 +46,17 @@ console.log(data)
       return <Card name={child.name} handyEvent={ this.dispatchNewSaga }/>
     })
 
-    // const children = ['foo']
-
     return (
       <div>
-        <h1> {this.props.root.name} </h1>
-        { children}
+        <div className="tree_path">
+          <Path handyEvent={ this.dispatchNewSaga } path={ this.props.root.path } />
+        </div>
+        <div className="tree__node-name">
+          <h1> {this.props.root.name} </h1>
+        </div>
+          <div className="tree__children">
+            { children}
+          </div>
       </div>
     )
   }
@@ -67,7 +73,7 @@ console.log(data)
 
 
     return(
-      <div>
+      <div className="tree">
         {jsx}
       </div>
     )
