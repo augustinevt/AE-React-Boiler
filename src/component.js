@@ -2,6 +2,7 @@ import React from 'react';
 import api from './helpers/api';
 import Card from './Card';
 import Path from './Path';
+import NewNodeForm from './NewNode';
 
 import { connect } from 'react-redux';
 
@@ -23,6 +24,7 @@ class DemoReact extends React.Component {
     }
 
     this.dispatchNewSaga = this.dispatchNewSaga.bind(this)
+    this.createNewNode = this.createNewNode.bind(this)
   }
 
   componentDidMount() {
@@ -34,16 +36,30 @@ class DemoReact extends React.Component {
   dispatchNewSaga(data) {
 console.log(data)
     this.props.dispatch({type: 'YOO', payload: {
+      id: data.id,
       name: data.name,
       manifest: this.props.manifest
     }})
   }
 
-// will probably
-  display(sets) {
+  createNewNode(data) {
+    const payload = {
+      name: data.name,
+      path: this.props.root.path + `/${this.props.root.name}`,
+      version: this.props.root.version,
+      tree: this.props.root.tree,
+    }
+    this.props.dispatch({
+      type: 'createNew',
+      payload,
+    })
+  }
 
+
+
+  display(sets) {
     const children = this.props.root.children.map((child, i) => {
-      return <Card name={child.name} handyEvent={ this.dispatchNewSaga }/>
+      return <Card node={child} handyEvent={ this.dispatchNewSaga }/>
     })
 
     return (
@@ -61,8 +77,6 @@ console.log(data)
     )
   }
 
-
-
   render() {
     let jsx;
       if ( this.props.isFetching ) {
@@ -75,6 +89,7 @@ console.log(data)
     return(
       <div className="tree">
         {jsx}
+        <NewNodeForm otherHandyEvent={this.createNewNode}/>
       </div>
     )
   }

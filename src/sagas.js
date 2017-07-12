@@ -5,9 +5,25 @@ import clone from 'clone';
 
 function* setCurrentTree(action) {
   try {
-    const {name, manifest} = action.payload;
+console.log(action.log)
+    const {id, name, manifest} = action.payload;
 
-    const newRoot = clone(manifest[name]);
+    let newRoot;
+
+    if ( name ) {
+      for (const key in manifest) {
+        const node = manifest[key];
+        newRoot = node.name === name ? node : newRoot;
+      }
+    } else if ( id ) {
+       newRoot = clone(manifest[id]);
+    } else {
+      console.log('Something is wrong with the tree building mech in saga')
+    };
+
+
+console.log(newRoot)
+
     const children = [];
 
     for (const key in manifest) {
@@ -33,10 +49,10 @@ function* setCurrentTree(action) {
 function* getTrees(action) {
 
   try {
-    const defaultNode = 'power'
+    const defaultNode = '5959a20881426368639e2c2f'
     const manifest = yield call(api.sets);
     const newTree = {};
-    const newPower = clone(manifest.power);
+    const newPower = clone(manifest[defaultNode]);
     const children = [];
 
 
@@ -61,12 +77,20 @@ function* getTrees(action) {
   }
 }
 
+function* createNewNode(action) {
+  console.log("CREATE NEW NODE", action)
+}
+
 function* loadingSaga() {
   yield takeLatest("GET_TREES_REQUESTED", getTrees)
 }
 
 function* treeSettingSaga() {
   yield takeLatest("YOO", setCurrentTree)
+}
+
+function* treeSettingSaga() {
+  yield takeLatest("createNew", createNewNode)
 }
 
 function* rootSaga() {

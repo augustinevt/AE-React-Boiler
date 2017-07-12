@@ -7,15 +7,15 @@ class Card extends React.Component {
   }
 
   handyTrigger() {
-    console.log(this.props)
-    this.props.handyEvent({name: this.props.name})
+    console.log("Good", this.props.node._id)
+    this.props.handyEvent({id: this.props.node._id})
   }
 
   render() {
     return (
-      <div className="child-card"> 
+      <div className="child-card">
         <div className="child-card__name" onClick={this.handyTrigger}>
-          {this.props.name}
+          {this.props.node.name}
         </div>
       </div>
     )
