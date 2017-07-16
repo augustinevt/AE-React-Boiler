@@ -1,3 +1,5 @@
+import clone from 'clone';
+
 const thing = (state = {manifest: {}, currentTree: {}, isFetching: true }, action) => {
   console.log(action)
   switch (action.type) {
@@ -11,7 +13,20 @@ const thing = (state = {manifest: {}, currentTree: {}, isFetching: true }, actio
     case 'SET_CURRENT_TREE':
 
       const { manifest, isFetching} = state;
+console.log('this is in set current tree', action.payload.newRoot)
       return { manifest, currentTree: action.payload.newRoot, isFetching}
+    case 'ADD_NODE':
+
+console.log('this is in the thing', state)
+
+      const newerManifest = clone(state.manifest);
+      const newNode = action.payload;
+      const newCurrentTree = clone(state.currentTree);
+
+      newCurrentTree.children.push(newNode);
+      newerManifest[newNode.id] = action.payload;
+
+      return { ...state, manifest: newerManifest, currentTree: newCurrentTree}
     default:
       return state;
   }

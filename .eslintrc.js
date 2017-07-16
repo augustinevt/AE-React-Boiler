@@ -7,7 +7,10 @@ module.exports = {
   },
   extends: 'eslint:recommended',
   parserOptions: {
-    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+      experimentalObjectRestSpread: true
+    }
   },
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
