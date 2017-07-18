@@ -1,26 +1,38 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import component from './component';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { createLogger } from 'redux-logger';
+import { all } from 'redux-saga/effects'
 
 import './styles/index.scss';
 import reducer from './reducer';
 import mySaga from './sagas'
 
-import { createLogger } from 'redux-logger';
+import { mainViewSagas, mainViewReducer } from './mainViewFeature';
+
+import App from './component';
 
 const logger = createLogger();
 
 const app = document.createElement('div');
 document.body.appendChild(app);
-let demoComponent = component;
+
+const reducers = combineReducers({
+  reducer,
+})
+
+function* rootSaga() {
+  yield all([
+    mainViewSagas()
+  ])
+}
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger))
-sagaMiddleware.run(mySaga)
+const store = createStore(mainViewReducer, applyMiddleware(sagaMiddleware, logger))
+sagaMiddleware.run(rootSaga)
 
 
 const render = (Component) => {
@@ -35,10 +47,10 @@ const render = (Component) => {
   );
 }
 
-render(component);
+render(App);
 
 if (module.hot) {
   module.hot.accept('./component', () => {
-    render(component);
+    render(App);
   });
 }
