@@ -25,6 +25,7 @@ class DemoReact extends React.Component {
 
     this.dispatchNewSaga = this.dispatchNewSaga.bind(this)
     this.createNewNode = this.createNewNode.bind(this)
+    this.deleteChildNode = this.deleteChildNode.bind(this)
   }
 
   componentDidMount() {
@@ -55,11 +56,15 @@ console.log(data)
     })
   }
 
+  deleteChildNode(data) {
+console.log(data)
+    this.props.dispatch({type: 'DELETE_NODE', payload: {id: data.id}} )
+  }
 
 
   display(sets) {
     const children = this.props.root.children.map((child, i) => {
-      return <Card node={child} handyEvent={ this.dispatchNewSaga }/>
+      return <Card node={child} deleteEvent={this.deleteChildNode} handyEvent={ this.dispatchNewSaga }/>
     })
 
     return (

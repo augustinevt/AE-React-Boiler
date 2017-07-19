@@ -19,4 +19,16 @@ export default {
       return res.json();
     }));
   },
+  deleteNode: (id) => {
+    return fetch(`http://localhost:8000/${id}`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      method: 'DELETE',
+    }).then((res => {
+      console.log(res)
+      return res.json();
+    }));
+  },
 };

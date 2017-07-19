@@ -37,6 +37,18 @@ function* createNewNode(action) {
   }
 }
 
+function* deleteNode(action) {
+  try {
+  const id = yield call(api.deleteNode, action.payload.id)
+  console.log('delete worked!', action, id)
+
+  } catch (e) {
+    console.log('deleting did not work', e, action)
+  }
+
+  yield put({type: 'NODE_DELETED', payload: {id: action.payload.id}})
+}
+
 function* loadingSaga() {
   yield takeLatest("GET_TREES_REQUESTED", getTrees)
 }
@@ -49,11 +61,16 @@ function* createNodeSaga() {
   yield takeLatest("createNew", createNewNode)
 }
 
+function* deleteNodeSaga() {
+  yield takeLatest("DELETE_NODE", deleteNode)
+}
+
 function* rootSaga() {
   yield all([
     loadingSaga(),
     treeSettingSaga(),
     createNodeSaga(),
+    deleteNodeSaga()
   ])
 }
 
