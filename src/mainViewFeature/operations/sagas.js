@@ -5,38 +5,8 @@ import clone from 'clone';
 
 function* setCurrentTree(action) {
   try {
-console.log(action.log)
-    const {id, name, manifest} = action.payload;
-
-    let newRoot;
-
-    if ( name ) {
-      for (const key in manifest) {
-        const node = manifest[key];
-        newRoot = node.name === name ? node : newRoot;
-      }
-    } else if ( id ) {
-       newRoot = clone(manifest[id]);
-    } else {
-      console.log('Something is wrong with the tree building mech in saga')
-    };
-
-    const children = [];
-
-    for (const key in manifest) {
-      const node = manifest[key];
-      const pathArray = node.path ? node.path.split(',') : '';
-      const parent = pathArray[pathArray.length - 2];
-      if (parent === newRoot.name) {
-        children.push(node);
-      }
-    }
-
-    newRoot.children = children;
-
-console.log(newRoot)
-
-    yield put({ type: 'SET_CURRENT_TREE', payload: {newRoot} })
+console.log(action)
+    yield put({ type: 'SET_CURRENT_TREE', payload: action.payload})
   } catch (e) {
     console.log('foo')
   }
@@ -46,27 +16,9 @@ console.log(newRoot)
 function* getTrees(action) {
 
   try {
-    const defaultNode = '5959a20881426368639e2c2f'
+
     const manifest = yield call(api.sets);
-    const newTree = {};
-    const newPower = clone(manifest[defaultNode]);
-    const children = [];
-
-
-    for (const key in manifest) {
-      const node = manifest[key];
-      const pathArray = node.path ? node.path.split(',') : '';
-      const parent = pathArray[pathArray.length - 2];
-      if (parent === newPower.name) {
-        children.push(node);
-      }
-    }
-
-    newPower.children = children;
-    newTree.root = newPower;
-
-    // yield put({ type: 'SET_CURRENT_TREE', payload: newPower });
-    yield put({ type: 'GET_TREES_SUCCESS', payload: {manifest, newPower} });
+    yield put({ type: 'GET_TREES_SUCCESS', payload: {manifest} });
 
   } catch (e) {
     yield put({ type: 'GET_TREES_FAILURE', message: e.message})

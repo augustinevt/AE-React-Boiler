@@ -36,9 +36,7 @@ class DemoReact extends React.Component {
   dispatchNewSaga(data) {
 console.log(data)
     this.props.dispatch({type: 'YOO', payload: {
-      id: data.id,
-      name: data.name,
-      manifest: this.props.manifest
+      id: data.id
     }})
   }
 
