@@ -30,7 +30,7 @@ function* createNewNode(action) {
   try {
     const newID = yield call(api.addNode, action.payload);
     const newNode = clone(action.payload);
-    newNode.id = newID.id;
+    newNode._id = newID.id;
     yield put({type: 'ADD_NODE', payload: newNode })
   } catch (e) {
     console.log('adding a node didn\'t work because ', e)

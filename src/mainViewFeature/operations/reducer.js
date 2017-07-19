@@ -10,14 +10,14 @@ const thing = (state = {manifest: {}, currentTree: {}, isFetching: true }, actio
     case 'SET_CURRENT_TREE':
       const { manifest, isFetching} = state;
 console.log('in the reducer')
-      const newerTree = Utils.createTreeFromNodeID(action.payload.id, manifest)
+      const newerTree = Utils.createTreeFromNodeID(action.payload.id, manifest, action.payload.name)
       return { manifest, currentTree: newerTree, isFetching}
     case 'ADD_NODE':
       const newerManifest = clone(state.manifest);
       const newNode = action.payload;
+      newerManifest[newNode._id] = action.payload;
       const newCurrentTree = clone(state.currentTree);
       newCurrentTree.children.push(newNode);
-      newerManifest[newNode.id] = action.payload;
       return { ...state, manifest: newerManifest, currentTree: newCurrentTree}
     default:
       return state;

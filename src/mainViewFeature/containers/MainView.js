@@ -36,14 +36,16 @@ class DemoReact extends React.Component {
   dispatchNewSaga(data) {
 console.log(data)
     this.props.dispatch({type: 'YOO', payload: {
-      id: data.id
+      id: data.id,
+      name: data.name,
     }})
   }
 
   createNewNode(data) {
+    const path = this.props.root.path === "" ? "," : this.props.root.path;
     const payload = {
       name: data.name,
-      path: this.props.root.path + `/${this.props.root.name}`,
+      path: path + `${this.props.root.name},`,
       version: this.props.root.version,
       tree: this.props.root.tree,
     }

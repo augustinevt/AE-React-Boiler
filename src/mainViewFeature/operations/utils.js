@@ -1,12 +1,20 @@
 import clone from 'clone';
 
-const createTreeFromNodeID = (id, manifest) => {
+const createTreeFromNodeID = (id, manifest, name=false) => {
 
   let newRoot;
 
-    newRoot = clone(manifest[id]);
-
-console.log(id, newRoot)
+  if ( name ) {
+    for (const key in manifest) {
+      const node = manifest[key];
+      newRoot = node.name === name ? node : newRoot;
+    }
+  } else if ( id ) {
+console.log('id block was run', manifest)
+     newRoot = clone(manifest[id]);
+  } else {
+    console.log('Something is wrong with the tree building mech in saga')
+  };
 
   const children = [];
 
@@ -14,6 +22,7 @@ console.log(id, newRoot)
     const node = manifest[key];
     const pathArray = node.path ? node.path.split(',') : '';
     const parent = pathArray[pathArray.length - 2];
+console.log('newRoot', newRoot, id)
     if (parent === newRoot.name) {
       children.push(node);
     }

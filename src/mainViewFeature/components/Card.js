@@ -12,6 +12,7 @@ class Card extends React.Component {
   }
 
   render() {
+console.log(this)
     return (
       <div className="child-card">
         <div className="child-card__name" onClick={this.handyTrigger}>
