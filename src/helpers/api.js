@@ -31,4 +31,18 @@ export default {
       return res.json();
     }));
   },
+  updateNode: (updatedObject, id) => {
+console.log(updatedObject, id)
+    return fetch(`http://localhost:8000/${id}`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      method: 'PUT',
+      body: JSON.stringify(updatedObject)
+    }).then((res => {
+      console.log(res)
+      return res.json();
+    }));
+  },
 };

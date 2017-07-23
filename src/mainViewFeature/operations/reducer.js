@@ -41,6 +41,14 @@ console.log('in the reducer')
 
       return {...state, manifest: evenNewManifest, currentTree: evenNewerCurrentTree}
 
+    case 'UPDATE_NODE_SUCCESS':
+
+      const newManifestUpdate = clone(state.manifest);
+      newManifestUpdate[action.payload._id] = action.payload;
+      const newCurrentTreeUpdate = Utils.createTreeFromNodeID(state.currentTree._id, newManifestUpdate)
+
+      return {...state, manifest: newManifestUpdate, currentTree: newCurrentTreeUpdate}
+
     default:
       return state;
   }

@@ -40,13 +40,21 @@ function* createNewNode(action) {
 function* deleteNode(action) {
   try {
   const id = yield call(api.deleteNode, action.payload.id)
-  console.log('delete worked!', action, id)
-
   } catch (e) {
     console.log('deleting did not work', e, action)
   }
 
   yield put({type: 'NODE_DELETED', payload: {id: action.payload.id}})
+}
+
+function* updateNode(action) {
+  try {
+    console.log(action.payload)
+    const id = yield call(api.updateNode, action.payload, action.payload._id)
+  } catch (e) {
+console.log('updating did not work', e)
+  }
+  yield put({type: 'UPDATE_NODE_SUCCESS', payload: action.payload });
 }
 
 function* loadingSaga() {
@@ -65,12 +73,17 @@ function* deleteNodeSaga() {
   yield takeLatest("DELETE_NODE", deleteNode)
 }
 
+function* updateNodeSaga() {
+  yield takeLatest("UPDATE_NODE_REQUEST", updateNode)
+}
+
 function* rootSaga() {
   yield all([
     loadingSaga(),
     treeSettingSaga(),
     createNodeSaga(),
-    deleteNodeSaga()
+    deleteNodeSaga(),
+    updateNodeSaga(),
   ])
 }
 

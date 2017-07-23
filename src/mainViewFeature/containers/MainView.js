@@ -3,6 +3,8 @@ import api from '../../helpers/api';
 import Card from '../components/Card';
 import Path from '../components/Path';
 import NewNodeForm from '../components/NewNode';
+import NodeName from '../components/NodeName';
+import merge from 'deepmerge';
 
 import { connect } from 'react-redux';
 
@@ -26,6 +28,7 @@ class DemoReact extends React.Component {
     this.dispatchNewSaga = this.dispatchNewSaga.bind(this)
     this.createNewNode = this.createNewNode.bind(this)
     this.deleteChildNode = this.deleteChildNode.bind(this)
+    this.updateNode = this.updateNode.bind(this)
   }
 
   componentDidMount() {
@@ -40,6 +43,11 @@ console.log(data)
       id: data.id,
       name: data.name,
     }})
+  }
+
+  updateNode(data) {
+    const updatedNodeObject = merge(this.props.root, data)
+    this.props.dispatch({type: 'UPDATE_NODE_REQUEST', payload: updatedNodeObject})
   }
 
   createNewNode(data) {
@@ -73,7 +81,7 @@ console.log(data)
           <Path handyEvent={ this.dispatchNewSaga } path={ this.props.root.path } />
         </div>
         <div className="tree__node-name">
-          <h1> {this.props.root.name} </h1>
+          <NodeName name={this.props.root.name} updateNode={this.updateNode} />
         </div>
           <div className="tree__children">
             { children}
