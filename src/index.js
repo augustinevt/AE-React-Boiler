@@ -8,8 +8,6 @@ import { createLogger } from 'redux-logger';
 import { all } from 'redux-saga/effects'
 
 import './styles/index.scss';
-import reducer from './reducer';
-import mySaga from './sagas'
 
 import { mainViewSagas, mainViewReducer } from './mainViewFeature';
 
@@ -20,9 +18,9 @@ const logger = createLogger();
 const app = document.createElement('div');
 document.body.appendChild(app);
 
-const reducers = combineReducers({
-  reducer,
-})
+// const reducers = combineReducers({
+//   reducer,
+// })
 
 function* rootSaga() {
   yield all([

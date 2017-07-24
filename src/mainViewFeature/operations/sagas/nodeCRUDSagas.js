@@ -1,22 +1,17 @@
 import { call, put, takeEvery, takeLatest, all } from 'redux-saga/effects'
-import api from '../../helpers/api';
+import api from '../../../helpers/api';
 import clone from 'clone';
-
 
 function* setCurrentTree(action) {
   try {
-console.log(action)
     yield put({ type: 'SET_CURRENT_TREE', payload: action.payload})
   } catch (e) {
-    console.log('foo')
+    console.log('error setting current tree', e)
   }
 }
 
-
 function* getTrees(action) {
-
   try {
-
     const manifest = yield call(api.sets);
     yield put({ type: 'GET_TREES_SUCCESS', payload: {manifest} });
 
