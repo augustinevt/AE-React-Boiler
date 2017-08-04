@@ -5,6 +5,10 @@ import Path from '../components/Path';
 import NewNodeForm from '../components/NewNode';
 import NodeName from '../components/NodeName';
 import merge from 'deepmerge';
+import Quill from 'quill';
+import ReactQuill from 'react-quill';
+import theme from 'react-quill/dist/quill.snow.css'
+
 
 import { connect } from 'react-redux';
 
@@ -29,16 +33,30 @@ class DemoReact extends React.Component {
     this.createNewNode = this.createNewNode.bind(this)
     this.deleteChildNode = this.deleteChildNode.bind(this)
     this.updateNode = this.updateNode.bind(this)
+    this.makeEditable = this.makeEditable.bind(this)
   }
 
   componentDidMount() {
 
     this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: []})
+console.log(document.getElementById('foo'))
+  }
 
+  makeEditable() {
+  //   var options = {
+  //   debug: 'info',
+  //   modules: {
+  //     toolbar: '#toolbar'
+  //   },
+  //   placeholder: 'Compose an epic...',
+  //   readOnly: true,
+  //   theme: 'snow'
+  // };
+  // var editor = new Quill('.quill-test', options);
+  console.log(document.getElementById('foo'))
   }
 
   dispatchNewSaga(data) {
-console.log(data)
     this.props.dispatch({type: 'YOO', payload: {
       id: data.id,
       name: data.name,
@@ -80,12 +98,13 @@ console.log(data)
         <div className="tree_path">
           <Path handyEvent={ this.dispatchNewSaga } path={ this.props.root.path } />
         </div>
-        <div className="tree__node-name">
+        <div id="foo" className="tree__node-name">
           <NodeName name={this.props.root.name} updateNode={this.updateNode} />
         </div>
-          <div className="tree__children">
-            { children}
-          </div>
+        <ReactQuill value={'test'} onChange={this.makeEditable} />
+        <div className="tree__children">
+          { children}
+        </div>
       </div>
     )
   }
