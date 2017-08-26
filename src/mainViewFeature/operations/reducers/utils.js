@@ -22,7 +22,6 @@ console.log('id block was run', manifest)
     const node = manifest[key];
     const pathArray = node.path ? node.path.split(',') : '';
     const parent = pathArray[pathArray.length - 2];
-console.log('newRoot', newRoot, id)
     if (parent === newRoot.name) {
       children.push(node);
     }

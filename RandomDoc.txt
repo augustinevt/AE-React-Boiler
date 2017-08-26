@@ -1,0 +1,69 @@
+so,
+
+webpack.... it's pretty intense... I'm glad I had a place to start.
+
+
+I need to make a document for starting a project. not just boilerplate.
+
+
+a complex project needs a way key. I methods I understand that I can use as context for other information.
+
+
+I may want to MVP before getting caught up in the optimizing...
+
+I'd like to learn more about docker
+
+
+
+
+documenting and stuff
+
+
+  before MVP
+
+    let's see if we can deploy
+
+    document schema
+    document pertinent info (database stuff, schema, whatever)
+
+
+  after mvp when you are adding "refactors".
+
+  first: you should make a setup document on how to set up a project
+
+    keep it referencing the survive stuff, but you need to take it into your own hands if you want to own it.
+
+    as you add production stuff, add to this document
+
+
+
+=====
+
+ssh -i treeTest2.pem ec2-user@ec2-34-229-164-181.compute-1.amazonaws.com
+
+The client is up... plan accordingly...
+
+
+================
+================
+
+
+So, it's live
+
+documentation
+
+  schema
+  ec2 things
+
+  docker stuff
+
+client
+
+  notes
+
+db
+
+  setup a new one
+  document the connection
+
+AWS

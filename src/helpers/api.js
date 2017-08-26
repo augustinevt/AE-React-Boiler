@@ -1,12 +1,12 @@
 export default {
   sets: () => {
-    return fetch('http://localhost:8000/tree/prime').then((res => {
+    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com/tree/prime').then((res => {
       console.log(res)
       return res.json();
     }));
   },
   addNode: (newObject) => {
-    return fetch('http://localhost:8000/createNode', {
+    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com/createNode', {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -20,7 +20,8 @@ export default {
     }));
   },
   deleteNode: (id) => {
-    return fetch(`http://localhost:8000/${id}`, {
+    return fetch(`http://ec2-34-229-173-148.compute-1.amazonaws.com
+/${id}`, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -33,7 +34,8 @@ export default {
   },
   updateNode: (updatedObject, id) => {
 console.log(updatedObject, id)
-    return fetch(`http://localhost:8000/${id}`, {
+    return fetch(`http://ec2-34-229-173-148.compute-1.amazonaws.com
+/${id}`, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",

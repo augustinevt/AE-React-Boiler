@@ -26,34 +26,28 @@ class DemoReact extends React.Component {
     super(props);
 
     this.state = {
-      sets: [],
+      description: this.props.root.description
     }
 
     this.dispatchNewSaga = this.dispatchNewSaga.bind(this)
     this.createNewNode = this.createNewNode.bind(this)
     this.deleteChildNode = this.deleteChildNode.bind(this)
     this.updateNode = this.updateNode.bind(this)
-    this.makeEditable = this.makeEditable.bind(this)
+    this.saveDescription = this.saveDescription.bind(this)
   }
 
   componentDidMount() {
-
     this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: []})
-console.log(document.getElementById('foo'))
   }
 
-  makeEditable() {
-  //   var options = {
-  //   debug: 'info',
-  //   modules: {
-  //     toolbar: '#toolbar'
-  //   },
-  //   placeholder: 'Compose an epic...',
-  //   readOnly: true,
-  //   theme: 'snow'
-  // };
-  // var editor = new Quill('.quill-test', options);
-  console.log(document.getElementById('foo'))
+
+  updateDescription(e) {
+    this.setState({description: e})
+  }
+
+  saveDescription() {
+    const html = this.editor.getEditorContents();
+    this.updateNode({description: html})
   }
 
   dispatchNewSaga(data) {
@@ -101,15 +95,17 @@ console.log(data)
         <div id="foo" className="tree__node-name">
           <NodeName name={this.props.root.name} updateNode={this.updateNode} />
         </div>
-        <ReactQuill value={'test'} onChange={this.makeEditable} />
         <div className="tree__children">
           { children}
         </div>
+        <ReactQuill ref={ editor => {this.editor = editor}} value={this.props.root.description} />
+        <button onClick={this.saveDescription}> save </button>
       </div>
     )
   }
 
   render() {
+
     let jsx;
       if ( this.props.isFetching ) {
         jsx =  <h1> loading </h1>
