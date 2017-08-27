@@ -109,6 +109,8 @@ console.log(data)
     let jsx;
       if ( this.props.isFetching ) {
         jsx =  <h1> loading </h1>
+      } else if ( !this.props.root ) {
+        jsx = "There are no nodes"
       } else {
         jsx = this.display(this.props.trees)
       }

@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "fc92492779c805e1ead9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d8b13304d59396212137"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -59668,38 +59668,32 @@ var DemoReact = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (DemoReact.__proto__ || Object.getPrototypeOf(DemoReact)).call(this, props));
 
     _this.state = {
-      sets: []
+      description: _this.props.root.description
     };
 
     _this.dispatchNewSaga = _this.dispatchNewSaga.bind(_this);
     _this.createNewNode = _this.createNewNode.bind(_this);
     _this.deleteChildNode = _this.deleteChildNode.bind(_this);
     _this.updateNode = _this.updateNode.bind(_this);
-    _this.makeEditable = _this.makeEditable.bind(_this);
+    _this.saveDescription = _this.saveDescription.bind(_this);
     return _this;
   }
 
   _createClass(DemoReact, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-
       this.props.dispatch({ type: 'GET_TREES_REQUESTED', payload: [] });
-      console.log(document.getElementById('foo'));
     }
   }, {
-    key: 'makeEditable',
-    value: function makeEditable() {
-      //   var options = {
-      //   debug: 'info',
-      //   modules: {
-      //     toolbar: '#toolbar'
-      //   },
-      //   placeholder: 'Compose an epic...',
-      //   readOnly: true,
-      //   theme: 'snow'
-      // };
-      // var editor = new Quill('.quill-test', options);
-      console.log(document.getElementById('foo'));
+    key: 'updateDescription',
+    value: function updateDescription(e) {
+      this.setState({ description: e });
+    }
+  }, {
+    key: 'saveDescription',
+    value: function saveDescription() {
+      var html = this.editor.getEditorContents();
+      this.updateNode({ description: html });
     }
   }, {
     key: 'dispatchNewSaga',
@@ -59763,12 +59757,20 @@ var DemoReact = function (_React$Component) {
           { className: 'tree__children' },
           children
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_quill___default.a, { value: 'test', onChange: this.makeEditable })
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_quill___default.a, { ref: function ref(editor) {
+            _this2.editor = editor;
+          }, value: this.props.root.description }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { onClick: this.saveDescription },
+          ' save '
+        )
       );
     }
   }, {
     key: 'render',
     value: function render() {
+
       var jsx = void 0;
       if (this.props.isFetching) {
         jsx = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -60004,7 +60006,6 @@ var createTreeFromNodeID = function createTreeFromNodeID(id, manifest) {
     var _node = manifest[_key];
     var pathArray = _node.path ? _node.path.split(',') : '';
     var parent = pathArray[pathArray.length - 2];
-    console.log('newRoot', newRoot, id);
     if (parent === newRoot.name) {
       children.push(_node);
     }

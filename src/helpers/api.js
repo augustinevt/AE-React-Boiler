@@ -1,12 +1,14 @@
+const apiDomain = 'http://api.tree.augustinevt.com'
+
 export default {
   sets: () => {
-    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com/tree/prime').then((res => {
+    return fetch(`${apiDomain}/tree/prime`).then((res => {
       console.log(res)
       return res.json();
     }));
   },
   addNode: (newObject) => {
-    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com/createNode', {
+    return fetch(`${apiDomain}/createNode`, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -20,8 +22,7 @@ export default {
     }));
   },
   deleteNode: (id) => {
-    return fetch(`http://ec2-34-229-173-148.compute-1.amazonaws.com
-/${id}`, {
+    return fetch(`${apiDomain}/${id}`, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -34,8 +35,7 @@ export default {
   },
   updateNode: (updatedObject, id) => {
 console.log(updatedObject, id)
-    return fetch(`http://ec2-34-229-173-148.compute-1.amazonaws.com
-/${id}`, {
+    return fetch(`${apiDomain}/${id}`, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",

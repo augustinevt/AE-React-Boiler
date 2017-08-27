@@ -10,10 +10,14 @@ const createTreeFromNodeID = (id, manifest, name=false) => {
       newRoot = node.name === name ? node : newRoot;
     }
   } else if ( id ) {
-console.log('id block was run', manifest)
      newRoot = clone(manifest[id]);
   } else {
-    console.log('Something is wrong with the tree building mech in saga')
+    // HACK: this is kind of stupid
+    for ( var node in manifest) {
+      if ( manifest[node].path === "" ) {
+        newRoot = manifest[node];
+      }
+    }
   };
 
   const children = [];
