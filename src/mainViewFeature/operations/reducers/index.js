@@ -1,3 +1,11 @@
-import nodeCRUDReducer from './nodeCRUDReducer';
+import { combineReducers } from 'redux';
 
-export default nodeCRUDReducer;
+import nodeCRUDReducer from './nodeCRUDReducer';
+import treeCRUDReducer from './treeCRUDReducer';
+
+const reducers = combineReducers({
+  currentTree: nodeCRUDReducer,
+  treeSettings: treeCRUDReducer
+})
+
+export default reducers;

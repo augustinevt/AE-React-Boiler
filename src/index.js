@@ -19,7 +19,8 @@ const app = document.createElement('div');
 document.body.appendChild(app);
 
 // const reducers = combineReducers({
-//   reducer,
+//   currentTree: mainViewReducer,
+//   treeSettings:
 // })
 
 function* rootSaga() {

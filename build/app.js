@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d8b13304d59396212137"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f727591294bd8a1bf18f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -59005,15 +59005,17 @@ var _temp = function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var apiDomain = 'http://api.tree.augustinevt.com';
+
 var _default = {
   sets: function sets() {
-    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com/tree/prime').then(function (res) {
+    return fetch(apiDomain + "/tree/prime").then(function (res) {
       console.log(res);
       return res.json();
     });
   },
   addNode: function addNode(newObject) {
-    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com/createNode', {
+    return fetch(apiDomain + "/createNode", {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
@@ -59027,7 +59029,7 @@ var _default = {
     });
   },
   deleteNode: function deleteNode(id) {
-    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com\n/' + id, {
+    return fetch(apiDomain + "/" + id, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
@@ -59040,7 +59042,7 @@ var _default = {
   },
   updateNode: function updateNode(updatedObject, id) {
     console.log(updatedObject, id);
-    return fetch('http://ec2-34-229-173-148.compute-1.amazonaws.com\n/' + id, {
+    return fetch(apiDomain + "/" + id, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
@@ -59061,7 +59063,9 @@ var _temp = function () {
     return;
   }
 
-  __REACT_HOT_LOADER__.register(_default, 'default', '/Users/augustinevontrapp/Desktop/tree-client-1/src/helpers/api.js');
+  __REACT_HOT_LOADER__.register(apiDomain, "apiDomain", "/Users/augustinevontrapp/Desktop/tree-client-1/src/helpers/api.js");
+
+  __REACT_HOT_LOADER__.register(_default, "default", "/Users/augustinevontrapp/Desktop/tree-client-1/src/helpers/api.js");
 }();
 
 ;
@@ -59778,6 +59782,8 @@ var DemoReact = function (_React$Component) {
           null,
           ' loading '
         );
+      } else if (!this.props.root) {
+        jsx = "There are no nodes";
       } else {
         jsx = this.display(this.props.trees);
       }
@@ -59910,9 +59916,14 @@ var thing = function thing() {
 
   switch (action.type) {
     case 'GET_TREES_SUCCESS':
-
       var newManifest = action.payload.manifest;
-      var newTree = __WEBPACK_IMPORTED_MODULE_1__utils__["a" /* default */].createTreeFromNodeID('5959a20881426368639e2c2f', newManifest);
+      var manifestIsEmpty = Object.keys(newManifest).length < 0;
+
+      if (manifestIsEmpty) {
+        return { manifest: newManifest, currentTree: newTree, isFetching: false };
+      }
+
+      var newTree = __WEBPACK_IMPORTED_MODULE_1__utils__["a" /* default */].createTreeFromNodeID(false, newManifest);
 
       return { manifest: newManifest, currentTree: newTree, isFetching: false };
 
@@ -59920,13 +59931,11 @@ var thing = function thing() {
       var manifest = state.manifest,
           isFetching = state.isFetching;
 
-      console.log('in the reducer');
       var newerTree = __WEBPACK_IMPORTED_MODULE_1__utils__["a" /* default */].createTreeFromNodeID(action.payload.id, manifest, action.payload.name);
 
       return { manifest: manifest, currentTree: newerTree, isFetching: isFetching };
 
     case 'ADD_NODE':
-
       var newerManifest = __WEBPACK_IMPORTED_MODULE_0_clone___default()(state.manifest);
       var newNode = action.payload;
       newerManifest[newNode._id] = action.payload;
@@ -59936,7 +59945,6 @@ var thing = function thing() {
       return _extends({}, state, { manifest: newerManifest, currentTree: newCurrentTree });
 
     case 'NODE_DELETED':
-
       var evenNewManifest = __WEBPACK_IMPORTED_MODULE_0_clone___default()(state.manifest);
       delete evenNewManifest[action.payload.id];
       var evenNewerCurrentTree = __WEBPACK_IMPORTED_MODULE_1__utils__["a" /* default */].createTreeFromNodeID(state.currentTree._id, evenNewManifest);
@@ -59944,7 +59952,6 @@ var thing = function thing() {
       return _extends({}, state, { manifest: evenNewManifest, currentTree: evenNewerCurrentTree });
 
     case 'UPDATE_NODE_SUCCESS':
-
       var newManifestUpdate = __WEBPACK_IMPORTED_MODULE_0_clone___default()(state.manifest);
       newManifestUpdate[action.payload._id] = action.payload;
       var newCurrentTreeUpdate = __WEBPACK_IMPORTED_MODULE_1__utils__["a" /* default */].createTreeFromNodeID(state.currentTree._id, newManifestUpdate);
@@ -59990,24 +59997,28 @@ var createTreeFromNodeID = function createTreeFromNodeID(id, manifest) {
 
   if (name) {
     for (var key in manifest) {
-      var node = manifest[key];
-      newRoot = node.name === name ? node : newRoot;
+      var _node = manifest[key];
+      newRoot = _node.name === name ? _node : newRoot;
     }
   } else if (id) {
-    console.log('id block was run', manifest);
     newRoot = __WEBPACK_IMPORTED_MODULE_0_clone___default()(manifest[id]);
   } else {
-    console.log('Something is wrong with the tree building mech in saga');
+    // HACK: this is kind of stupid
+    for (var node in manifest) {
+      if (manifest[node].path === "") {
+        newRoot = manifest[node];
+      }
+    }
   };
 
   var children = [];
 
   for (var _key in manifest) {
-    var _node = manifest[_key];
-    var pathArray = _node.path ? _node.path.split(',') : '';
+    var _node2 = manifest[_key];
+    var pathArray = _node2.path ? _node2.path.split(',') : '';
     var parent = pathArray[pathArray.length - 2];
     if (parent === newRoot.name) {
-      children.push(_node);
+      children.push(_node2);
     }
   }
 

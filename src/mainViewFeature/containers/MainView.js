@@ -14,9 +14,13 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return {
-    root: state.currentTree,
-    manifest: state.manifest,
-    isFetching: state.isFetching,
+    root: state.currentTree.currentTree,
+    manifest: state.currentTree.manifest,
+    isFetching: state.currentTree.isFetching,
+
+    treeName: state.treeSettings.treeName,
+    treeVersion: state.treeSettings.treeVersion,
+    treeList: state.treeSettings.treeList,
   }
 }
 
@@ -29,15 +33,20 @@ class DemoReact extends React.Component {
       description: this.props.root.description
     }
 
-    this.dispatchNewSaga = this.dispatchNewSaga.bind(this)
-    this.createNewNode = this.createNewNode.bind(this)
-    this.deleteChildNode = this.deleteChildNode.bind(this)
-    this.updateNode = this.updateNode.bind(this)
-    this.saveDescription = this.saveDescription.bind(this)
+    this.dispatchNewSaga = this.dispatchNewSaga.bind(this);
+    this.createNewNode = this.createNewNode.bind(this);
+    this.deleteChildNode = this.deleteChildNode.bind(this);
+    this.updateNode = this.updateNode.bind(this);
+    this.saveDescription = this.saveDescription.bind(this);
+
+    this.createNewTree = this.createNewTree.bind(this);
   }
 
   componentDidMount() {
-    this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: []})
+
+    this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: this.props.treeName})
+    this.props.dispatch({type: 'GET_TREE_LIST_REQUESTED', payload: this.props.treeName})
+
   }
 
 
@@ -77,18 +86,45 @@ class DemoReact extends React.Component {
   }
 
   deleteChildNode(data) {
-console.log(data)
     this.props.dispatch({type: 'DELETE_NODE', payload: {id: data.id}} )
   }
 
+
+
+  /// new tree stuff ///
+
+  createNewTree() {
+    console.log(this.newTreeInput.value)
+
+    this.props.dispatch({type: 'CREATE_TREE_REQUESTED', payload: this.newTreeInput.value})
+
+
+  }
+
+  displayTreeList() {
+    return this.props.treeList.map( tree => {
+      return <h3> {tree} </h3>
+    })
+  }
 
   display(sets) {
     const children = this.props.root.children.map((child, i) => {
       return <Card node={child} deleteEvent={this.deleteChildNode} handyEvent={ this.dispatchNewSaga }/>
     })
 
+    const trees = this.displayTreeList();
+
     return (
       <div>
+
+        <div>
+          <input ref={ (el) => {this.newTreeInput = el}} />
+          <button onClick={this.createNewTree}> Create New Tree </button>
+        </div>
+
+        {trees}
+
+
         <div className="tree_path">
           <Path handyEvent={ this.dispatchNewSaga } path={ this.props.root.path } />
         </div>

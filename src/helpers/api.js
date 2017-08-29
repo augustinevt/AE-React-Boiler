@@ -1,8 +1,8 @@
-const apiDomain = 'http://api.tree.augustinevt.com'
+const apiDomain = 'http://localhost:8000';
 
 export default {
-  sets: () => {
-    return fetch(`${apiDomain}/tree/prime`).then((res => {
+  sets: (treeName) => {
+    return fetch(`${apiDomain}/tree/${treeName}`).then((res => {
       console.log(res)
       return res.json();
     }));
@@ -34,7 +34,6 @@ export default {
     }));
   },
   updateNode: (updatedObject, id) => {
-console.log(updatedObject, id)
     return fetch(`${apiDomain}/${id}`, {
       headers: {
         "Accept": "application/json",
@@ -47,4 +46,28 @@ console.log(updatedObject, id)
       return res.json();
     }));
   },
+
+
+  createTree: (treeName) => {
+    return fetch(`${apiDomain}/tree`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      method: 'POST',
+      body: JSON.stringify({name: treeName})
+
+    }).then((res => {
+      console.log(res)
+      return res.json();
+    }));
+  },
+
+  getTreeList: () => {
+    return fetch(`${apiDomain}/treeSettings/august_von_trapp`).then((res => {
+      console.log(res)
+      return res.json();
+    }));
+  },
+
 };

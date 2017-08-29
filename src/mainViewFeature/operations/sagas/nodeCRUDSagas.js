@@ -12,7 +12,7 @@ function* setCurrentTree(action) {
 
 function* getTrees(action) {
   try {
-    const manifest = yield call(api.sets);
+    const manifest = yield call(api.sets, action.payload);
     yield put({ type: 'GET_TREES_SUCCESS', payload: {manifest} });
 
   } catch (e) {
@@ -51,6 +51,58 @@ console.log('updating did not work', e)
   }
   yield put({type: 'UPDATE_NODE_SUCCESS', payload: action.payload });
 }
+///////////
+
+
+
+
+
+function* createNewTree(action) {
+  try {
+    console.log(action.payload)
+    const id = yield call(api.createTree, action.payload)
+  } catch (e) {
+console.log('creating new tree did not work', e)
+  }
+  yield put({type: 'CREATE_TREE_SUCCESS', payload: action.payload });
+  yield getTrees({payload: action.payload});
+}
+
+function* treeCreatingSaga() {
+  yield takeLatest("CREATE_TREE_REQUESTED", createNewTree)
+}
+
+
+
+
+//////
+
+
+
+function* getTreeList(action) {
+let treeList = [];
+  try {
+    treeList = yield call(api.getTreeList)
+  } catch (e) {
+console.log('creating new tree did not work', e)
+  }
+
+console.warn(';alsjf;laksdjf;lkasdjf;lksdjf;lkasdjf;lkasdj', treeList)
+  yield put({type: 'GET_TREE_LIST_SUCCESS', payload: treeList[0].trees });
+}
+
+function* getTreeListSaga() {
+  yield takeLatest("GET_TREE_LIST_REQUESTED", getTreeList)
+}
+
+
+
+
+
+
+///////
+
+/// ===== ///
 
 function* loadingSaga() {
   yield takeLatest("GET_TREES_REQUESTED", getTrees)
@@ -79,6 +131,9 @@ function* rootSaga() {
     createNodeSaga(),
     deleteNodeSaga(),
     updateNodeSaga(),
+
+    treeCreatingSaga(),
+    getTreeListSaga(),
   ])
 }
 
