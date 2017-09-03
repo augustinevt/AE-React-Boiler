@@ -40,6 +40,7 @@ class DemoReact extends React.Component {
     this.saveDescription = this.saveDescription.bind(this);
 
     this.createNewTree = this.createNewTree.bind(this);
+    this.changeTree = this.changeTree.bind(this);
   }
 
   componentDidMount() {
@@ -101,10 +102,18 @@ class DemoReact extends React.Component {
 
   }
 
+  changeTree(e) {
+console.log(e.target.value)
+    const treeName = e.target.value;
+    this.props.dispatch({type: 'GET_TREES_REQUESTED', payload: treeName})
+  }
+
   displayTreeList() {
-    return this.props.treeList.map( tree => {
-      return <h3> {tree} </h3>
-    })
+    const options = this.props.treeList.map( tree => {
+      return <option value={tree}>{tree}</option>
+    });
+
+    return <select onChange={this.changeTree} default="prime"> {options} </select>
   }
 
   display(sets) {
@@ -131,10 +140,10 @@ class DemoReact extends React.Component {
         <div id="foo" className="tree__node-name">
           <NodeName name={this.props.root.name} updateNode={this.updateNode} />
         </div>
+        <ReactQuill className="tree__editor" ref={ editor => {this.editor = editor}} value={this.props.root.description} />
         <div className="tree__children">
           { children}
         </div>
-        <ReactQuill ref={ editor => {this.editor = editor}} value={this.props.root.description} />
         <button onClick={this.saveDescription}> save </button>
       </div>
     )
